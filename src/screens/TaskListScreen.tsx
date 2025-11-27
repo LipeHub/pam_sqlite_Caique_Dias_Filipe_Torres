@@ -113,7 +113,6 @@ export default function TaskListScreen({ onOpenMenu, refreshTrigger }: Props) {
   return (
     <View style={styles.container}>
       
-      {/* Header */}
       <View style={styles.header}>
         <TouchableOpacity onPress={onOpenMenu}>
             <Ionicons name="menu" size={30} color="#0078D7" />
@@ -151,7 +150,6 @@ export default function TaskListScreen({ onOpenMenu, refreshTrigger }: Props) {
         }
       />
 
-      {/* CORREÇÃO: Adicionado keyboardVerticalOffset para levantar o input */}
       <KeyboardAvoidingView 
         behavior={Platform.OS === "ios" ? "padding" : "height"}
         keyboardVerticalOffset={Platform.OS === "ios" ? 60 : 0}
@@ -211,12 +209,11 @@ const styles = StyleSheet.create({
   },
   completedTitle: { marginLeft: 10, fontWeight: 'bold', color: '#666' },
   
-  // CORREÇÃO: MarginBottom maior para desgrudar do fundo (especialmente iOS)
   inputContainer: {
     flexDirection: 'row', alignItems: 'center', 
     padding: 15, 
     marginHorizontal: 15,
-    marginBottom: Platform.OS === 'ios' ? 40 : 20, // Levantado do chão
+    marginBottom: Platform.OS === 'ios' ? 40 : 20,
     marginTop: 10,
     backgroundColor: '#f5f5f5', borderRadius: 10,
     elevation: 4, shadowColor: '#000', shadowOpacity: 0.1, shadowRadius: 4

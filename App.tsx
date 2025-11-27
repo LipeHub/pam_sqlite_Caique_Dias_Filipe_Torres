@@ -12,11 +12,10 @@ import TaskListScreen from './src/screens/TaskListScreen';
 const SCREEN_WIDTH = Dimensions.get('window').width;
 const DRAWER_WIDTH = SCREEN_WIDTH * 0.75;
 
-// Componente Interno que tem acesso ao Banco de Dados
 const MainLayout = () => {
-  const db = useSQLiteContext(); // Hook do banco
+  const db = useSQLiteContext();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [refreshKey, setRefreshKey] = useState(0); // Gatilho para recarregar a lista
+  const [refreshKey, setRefreshKey] = useState(0);
   
   const slideAnim = useRef(new Animated.Value(-DRAWER_WIDTH)).current;
   const fadeAnim = useRef(new Animated.Value(0)).current;
@@ -29,7 +28,6 @@ const MainLayout = () => {
     ]).start();
   };
 
-  // Função para Apagar Tudo
   const handleDeleteAll = () => {
     Alert.alert(
       "Apagar Tudo",
@@ -41,9 +39,9 @@ const MainLayout = () => {
           style: "destructive", 
           onPress: async () => {
             try {
-              await db.runAsync('DELETE FROM tasks'); // Limpa a tabela
-              setRefreshKey(prev => prev + 1); // Força a lista a recarregar
-              toggleMenu(false); // Fecha o menu
+              await db.runAsync('DELETE FROM tasks');
+              setRefreshKey(prev => prev + 1);
+              toggleMenu(false);
             } catch (e) {
               console.error(e);
             }
@@ -65,29 +63,22 @@ const MainLayout = () => {
 
   return (
     <View style={{ flex: 1, backgroundColor: 'white' }}>
-      
-      {/* TELA DA LISTA */}
       <View style={{ flex: 1 }}>
-          {/* Passamos o refreshKey. Se ele mudar, a lista recarrega. */}
           <TaskListScreen 
               refreshTrigger={refreshKey}
               onOpenMenu={() => toggleMenu(true)}
           />
       </View>
 
-      {/* OVERLAY ESCURO */}
       {isMenuOpen && (
         <TouchableOpacity style={styles.overlayContainer} activeOpacity={1} onPress={() => toggleMenu(false)}>
           <Animated.View style={[styles.overlay, { opacity: fadeAnim }]} />
         </TouchableOpacity>
       )}
 
-      {/* MENU LATERAL */}
       <Animated.View style={[styles.drawer, { transform: [{ translateX: slideAnim }] }]}>
         <SafeAreaView style={{ flex: 1, paddingTop: Platform.OS === 'android' ? 40 : 0 }}>
-          
           <View style={{ padding: 20 }}>
-              {/* FRASE ADICIONADA AQUI */}
               <Text style={styles.copyrightText}>
                 ©2025 à 2025 - Caique Dias e Filipe Torres
               </Text>
@@ -95,10 +86,8 @@ const MainLayout = () => {
               <Text style={{ fontSize: 20, fontWeight: 'bold', color: '#000' }}>Menu</Text>
           </View>
 
-          {/* Único Item de Menu agora */}
           <MenuItem icon="sunny-outline" label="Meu Dia" isActive={true} />
 
-          {/* Botão de Apagar Tudo no Rodapé */}
           <View style={{ flex: 1 }} /> 
           <View style={styles.divider} />
           
@@ -114,7 +103,6 @@ const MainLayout = () => {
   );
 };
 
-// App Principal
 export default function App() {
   return (
     <SQLiteProvider databaseName="mstodo_simple_v1.db" onInit={initDB}>
@@ -134,11 +122,10 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.5, shadowRadius: 10, elevation: 20
   },
   
-  // Estilo novo para a frase de copyright
   copyrightText: {
     fontSize: 10,
     color: '#888',
-    marginBottom: 5, // Espaço entre a frase e a palavra "Menu"
+    marginBottom: 5,
   },
 
   menuItem: { flexDirection: 'row', alignItems: 'center', padding: 15, marginHorizontal: 10, borderRadius: 5 },
